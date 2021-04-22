@@ -1,25 +1,19 @@
 FROM alpine:3.7
 
-LABEL MAINTAINER="Aurelien PERRIER <a.perrier89@gmail.com>"
-LABEL APP="telegraf"
-LABEL APP_REPOSITORY="https://github.com/influxdata/telegraf/releases"
+ENV TELEGRAF_VERSION 1.18.1
 
-ENV TIMEZONE Europe/Paris
-ENV TELEGRAF_VERSION 1.6.3
-
-# Work path
 WORKDIR /scripts
 
-# Downloading Telegraf
-ADD https://dl.influxdata.com/telegraf/releases/telegraf-${TELEGRAF_VERSION}-static_linux_amd64.tar.gz ./
+ADD https://dl.influxdata.com/telegraf/releases/telegraf-${TELEGRAF_VERSION}_static_linux_amd64.tar.gz ./
 
-# Coping config & scripts
 COPY ./scripts/start.sh start.sh
+COPY ./configs/telegraf.conf telegraf.conf
 
 # Installing packages
-RUN tar -C . -xzf telegraf-${TELEGRAF_VERSION}-static_linux_amd64.tar.gz && \
-        chmod +x telegraf/* && \
-        cp telegraf/telegraf /usr/bin/ && \
-        rm -rf *.tar.gz* telegraf/ 
+RUN tar -C . -xzf telegraf-${TELEGRAF_VERSION}_static_linux_amd64.tar.gz
+RUN chmod +x telegraf-${TELEGRAF_VERSION}/usr/bin/telegraf
+RUN chmod +x start.sh
+RUN cp telegraf-${TELEGRAF_VERSION}/usr/bin/telegraf /usr/bin/
+RUN rm -rf *.tar.gz* telegraf-${TELEGRAF_VERSION}/
 
 ENTRYPOINT [ "./start.sh" ]

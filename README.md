@@ -1,13 +1,19 @@
-# Telegraf [![Docker Repository on Quay](https://quay.io/repository/perriea/alpine-telegraf/status "Docker Repository on Quay")](https://quay.io/repository/perriea/alpine-telegraf)
+# Telegraf with alpine docker
 
 ## Versions
 
 Alpine : `3.7`   
-Telegraf : `1.6.3`   
+Telegraf : `1.18.1`   
 
-## Commands
+## build, run Commands
 
-Build : `docker build -t perriea/alpine-telegraf:1.0 .`   
-Pull : `docker pull perriea/alpine-telegraf:1.0`   
+```
+$ docker build -t alpine-telegraf:1.0 .
+$ docker run -p 9933:9933 alpine-telegraf:1.0 
+```
 
-Run : `docker run -d perriea/alpine-telegraf:1.0`
+## Test
+
+```
+$ curl localhost:9933/metrics
+```
